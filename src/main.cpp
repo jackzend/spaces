@@ -3,6 +3,7 @@
 #include "utils/shape_wrapper.h"
 #include "utils/color_wrapper.h"
 #include "room.h"
+#include "spaces_camera.h"
 #include <iostream>
 #include <random>
 
@@ -20,26 +21,33 @@ int main()
 
    std::shared_ptr<Room> room1 = std::make_shared<Room>();
 
-   SetTargetFPS( 60 );
+   SpacesCamera cam;
 
+   SetTargetFPS( 60 );
    while ( !WindowShouldClose() )
    {
-      if ( IsKeyPressed( KEY_F11 ) )
+      if ( IsKeyDown( KEY_UP ) )
       {
-         ToggleFullscreen();
+         cam.decrementY();
       }
-
-      ColorWrap temp1( distr( gen ), distr( gen ), distr( gen ), 255 );
-      ColorWrap temp2( distr( gen ), distr( gen ), distr( gen ), 255 );
-
-      room1->setRoomColor( temp1 );
-      room1->setRoomOutlineColor( temp2 );
-
+      else if ( IsKeyDown( KEY_DOWN ) )
+      {
+         cam.incrementY();
+      }
+      else if ( IsKeyDown( KEY_LEFT ) )
+      {
+         cam.decrementX();
+      }
+      else if ( IsKeyDown( KEY_RIGHT ) )
+      {
+         cam.incrementX();
+      }
+      std::cout << cam.getOffset().x << " " << cam.getOffset().y << std::endl;
+      room1->setLocation( cam.getOffset() );
       BeginDrawing();
 
       ClearBackground( backgroundColor );
-      DrawRectangleRec( room1->getShape(), room1->getRoomColor() );
-      DrawRectangleLinesEx( room1->getShape(), 10.0f, room1->getRoomOutlineColor() );
+      room1->drawRoom();
       DrawText( "Testing", 10, 10, 20, DARKGREEN );
       EndDrawing();
    }

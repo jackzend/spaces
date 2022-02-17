@@ -24,6 +24,9 @@ namespace spaces_defs
       DOWN = 3
    };
 
+   const float SPACES_CAMERA_INCREMENT_X = 2.0f;
+   const float SPACES_CAMERA_INCREMENT_Y = 2.0f;
+
 } // spaces_defs
 
 template<typename ShapeStruct>

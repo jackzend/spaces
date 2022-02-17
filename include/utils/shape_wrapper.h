@@ -7,6 +7,11 @@ class ShapeWrap
    public:
       ShapeWrap()                    = delete;
       ShapeWrap( const ShapeWrap & ) = default;
+
+      ShapeWrap( const ShapeStruct &s )
+      {
+         shape = s;
+      }
       constexpr ShapeWrap( const float x, const float y, const float width, const float height ) : shape()
       {
          shape.x      = x;
@@ -16,6 +21,7 @@ class ShapeWrap
       }
 
       ShapeStruct getShape() const { return shape; }
+      void setShape( const ShapeStruct &s ) { shape = s; }
 
 };
 
