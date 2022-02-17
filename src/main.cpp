@@ -2,28 +2,23 @@
 #include "spaces_defs.h"
 #include "utils/shape_wrapper.h"
 #include "utils/color_wrapper.h"
+#include "room.h"
 #include <iostream>
+#include <random>
 
 using namespace spaces_defs;
 
-template<typename ShapeStruct>
-inline ShapeStruct resizeShape( const ShapeStruct &s )
-{
-   ShapeStruct ret;
-   ret.x      = s.x * ( ( float )GetRenderWidth() / ( float )spaces_defs::SPACES_SCREEN_WIDTH );
-   ret.y      = s.y * ( ( float )GetRenderHeight() / ( float )spaces_defs::SPACES_SCREEN_HEIGHT );
-   ret.width  = s.width * ( ( float )GetRenderWidth() / ( float )spaces_defs::SPACES_SCREEN_WIDTH );
-   ret.height = s.height * ( ( float )GetRenderHeight() / ( float )spaces_defs::SPACES_SCREEN_HEIGHT );
-
-   return ret;
-}
 int main()
 {
-   SetConfigFlags( FLAG_WINDOW_RESIZABLE );   // Window configuration flags
+   std::random_device rd;
+   std::mt19937 gen( rd() );
+   std::uniform_int_distribution<> distr( 0, 255 );
+
    InitWindow( SPACES_SCREEN_WIDTH, SPACES_SCREEN_HEIGHT, "spaces poc" );
 
    auto backgroundColor = SPACES_GREEN.getColor();
-   auto roomRect        = resizeShape( SPACES_ROOM.getShape() );
+
+   std::shared_ptr<Room> room1 = std::make_shared<Room>();
 
    SetTargetFPS( 60 );
 
@@ -33,18 +28,20 @@ int main()
       {
          ToggleFullscreen();
       }
-      roomRect = resizeShape( SPACES_ROOM.getShape() );
+
+      ColorWrap temp1( distr( gen ), distr( gen ), distr( gen ), 255 );
+      ColorWrap temp2( distr( gen ), distr( gen ), distr( gen ), 255 );
+
+      room1->setRoomColor( temp1 );
+      room1->setRoomOutlineColor( temp2 );
 
       BeginDrawing();
-      //std::cout << GetRenderHeight() << std::endl;
-      std::cout << roomRect.width << " " << roomRect.height << std::endl;
 
       ClearBackground( backgroundColor );
-      DrawRectangleRec( roomRect, SPACES_MINT.getColor() );
-      DrawRectangleLinesEx( roomRect, 10.0f, SPACES_DARK_MINT.getColor() );
+      DrawRectangleRec( room1->getShape(), room1->getRoomColor() );
+      DrawRectangleLinesEx( room1->getShape(), 10.0f, room1->getRoomOutlineColor() );
       DrawText( "Testing", 10, 10, 20, DARKGREEN );
       EndDrawing();
    }
    CloseWindow();
-
 }

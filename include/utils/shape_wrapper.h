@@ -1,12 +1,12 @@
 #ifndef SHAPE_WRAPPER_H
 #define SHAPE_WRAPPER_H
-
 template<typename ShapeStruct>
 class ShapeWrap
 {
    ShapeStruct shape;
    public:
-      ShapeWrap() = delete;
+      ShapeWrap()                    = delete;
+      ShapeWrap( const ShapeWrap & ) = default;
       constexpr ShapeWrap( const float x, const float y, const float width, const float height ) : shape()
       {
          shape.x      = x;

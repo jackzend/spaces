@@ -16,6 +16,26 @@ namespace spaces_defs
 
    constexpr ShapeWrap<Rectangle> SPACES_ROOM = ShapeWrap<Rectangle>( ( ( float )SPACES_SCREEN_WIDTH / 2.0f ) - ( 1500.0f / 2.0f ), ( ( float )SPACES_SCREEN_HEIGHT / 2.0f ) - ( 750.0f / 2.0f ), 1500.0f, 750.0f );
 
+   enum class ShapeNeighbors
+   {
+      LEFT = 0,
+      RIGHT = 1,
+      UP = 2,
+      DOWN = 3
+   };
+
 } // spaces_defs
+
+template<typename ShapeStruct>
+inline ShapeStruct resizeShape( const ShapeStruct &s )
+{
+   ShapeStruct ret;
+   ret.x      = s.x * ( ( float )GetRenderWidth() / ( float )spaces_defs::SPACES_SCREEN_WIDTH );
+   ret.y      = s.y * ( ( float )GetRenderHeight() / ( float )spaces_defs::SPACES_SCREEN_HEIGHT );
+   ret.width  = s.width * ( ( float )GetRenderWidth() / ( float )spaces_defs::SPACES_SCREEN_WIDTH );
+   ret.height = s.height * ( ( float )GetRenderHeight() / ( float )spaces_defs::SPACES_SCREEN_HEIGHT );
+
+   return ret;
+}
 
 #endif // SPACES_DEFS_H
