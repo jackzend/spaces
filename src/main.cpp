@@ -19,13 +19,16 @@ int main()
 
    auto backgroundColor = SPACES_GREEN.getColor();
 
-   std::shared_ptr<Room> room1 = std::make_shared<Room>();
-   std::shared_ptr<Room> room2 = std::make_shared<Room>();
-   std::shared_ptr<Room> room3 = std::make_shared<Room>();
-   std::shared_ptr<Room> room4 = std::make_shared<Room>();
+   std::shared_ptr<Room> room1 = std::make_shared<Room>( "Jack's Room" );
+   std::shared_ptr<Room> room2 = std::make_shared<Room>( "Ellie's Room" );
+   std::shared_ptr<Room> room3 = std::make_shared<Room>( "Griff's Room" );
+   std::shared_ptr<Room> room4 = std::make_shared<Room>( "Elyza's Room" );
+   room4->setRoomColor( SPACES_DARK_MINT );
+   room4->setRoomOutlineColor( SPACES_MINT );
    room1->setNeighbor( room2, SpacesNeighbors::LEFT ); // will also make room1 the neighbor of room 2
    room1->setNeighbor( room3, SpacesNeighbors::RIGHT );
    room3->setNeighbor( room4, SpacesNeighbors::UP );
+   //room1->setNeighbor( room3, SpacesNeighbors::LEFT ); // should induce an error message since alreadt has left neighbor
 
    SpacesCamera cam;
    SetTargetFPS( 60 );
@@ -47,7 +50,7 @@ int main()
       {
          cam.incrementX();
       }
-      std::cout << cam.getOffset().x << " " << cam.getOffset().y << std::endl;
+      //std::cout << cam.getOffset().x << " " << cam.getOffset().y << std::endl;
 
       room1->updateLocationWithCameraOffset( cam.getOffset() );
       room2->updateLocationWithCameraOffset( cam.getOffset() );

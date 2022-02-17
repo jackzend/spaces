@@ -1,6 +1,6 @@
 #ifndef SPACES_DEFS_H
 #define SPACES_DEFS_H
-
+#include <memory>
 #include <raylib.h>
 #include "utils/color_wrapper.h"
 #include "utils/shape_wrapper.h"
@@ -39,6 +39,13 @@ inline ShapeStruct resizeShape( const ShapeStruct &s )
    ret.height = s.height * ( ( float )GetRenderHeight() / ( float )spaces_defs::SPACES_SCREEN_HEIGHT );
 
    return ret;
+}
+
+template<typename T>
+inline bool is_uninitialized( std::weak_ptr<T> const &weak )
+{
+   using wt = std::weak_ptr<T>;
+   return !weak.owner_before( wt{} ) && !wt{}.owner_before( weak );
 }
 
 #endif // SPACES_DEFS_H

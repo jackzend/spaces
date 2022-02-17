@@ -7,6 +7,8 @@
 #include "utils/color_wrapper.h"
 #include "spaces_defs.h"
 #include <vector>
+#include <iostream>
+#include <string>
 
 class Room : public std::enable_shared_from_this<Room>
 {
@@ -16,17 +18,16 @@ class Room : public std::enable_shared_from_this<Room>
    std::vector<std::weak_ptr<Room> > _mNeighbors;
    Vector2 _mLocation;
    Vector2 _mOrigin;
+   std::string _mName;
 
    void fixInternalShape();
 
    public:
       Room();                         // default yes
+      Room( const std::string aName );
+      // add custom one that just specifies its colors and name
       Room( const Room && ) = delete; // implement move ctor later if we need it
-      Room( std::vector<std::weak_ptr<Room> > &aNeighbors,
-            ShapeWrap<Rectangle>              &aRoomShape,
-            ColorWrap                         &aRoomColor,
-            ColorWrap                         &aRoomOutline,
-            Vector2                           &aLocation );
+
       Room &operator=( const Room & ) = delete;
       Room( const Room & )            = delete;
 
@@ -34,10 +35,12 @@ class Room : public std::enable_shared_from_this<Room>
       Color getRoomColor() { return _mRoomColor_ptr->getColor(); }
       Color getRoomOutlineColor() { return _mRoomOutline_ptr->getColor(); }
       std::shared_ptr<Room> getNeighbor( spaces_defs::SpacesNeighbors i ) { return _mNeighbors[static_cast<size_t>( i )].lock(); }
+      std::string getRoomName() { return _mName; }
 
       void setRoomColor( const ColorWrap &c ) { _mRoomColor_ptr = std::make_unique<ColorWrap>( c ); }
       void setRoomOutlineColor( const ColorWrap &c ) { _mRoomOutline_ptr = std::make_unique<ColorWrap>( c ); }
       void setRoomShape( const ShapeWrap<Rectangle> &s ) { _mRoomShape_ptr = std::make_unique<ShapeWrap<Rectangle> >( s ); }
+      void setRoomName( const std::string &aName ) { _mName = aName; }
 
       void setNeighbor( std::shared_ptr<Room>        nbor,
                         spaces_defs::SpacesNeighbors i );

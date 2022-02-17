@@ -7,7 +7,23 @@ Room::Room()
    _mRoomOutline_ptr( nullptr ),
    _mNeighbors( std::vector<std::weak_ptr<Room> >( 4 ) ),
    _mLocation(),
-   _mOrigin()
+   _mOrigin(),
+   _mName( "Empty!" )
+{
+   _mRoomShape_ptr   = std::make_unique<ShapeWrap<Rectangle> >( spaces_defs::SPACES_ROOM );
+   _mRoomColor_ptr   = std::make_unique<ColorWrap>( spaces_defs::SPACES_MINT );
+   _mRoomOutline_ptr = std::make_unique<ColorWrap>( spaces_defs::SPACES_DARK_MINT );
+   setOrigin( 0.0f, 0.0f );
+}
+Room::Room( const std::string aName )
+   :
+   _mRoomShape_ptr( nullptr ),
+   _mRoomColor_ptr( nullptr ),
+   _mRoomOutline_ptr( nullptr ),
+   _mNeighbors( std::vector<std::weak_ptr<Room> >( 4 ) ),
+   _mLocation(),
+   _mOrigin(),
+   _mName( aName )
 {
    _mRoomShape_ptr   = std::make_unique<ShapeWrap<Rectangle> >( spaces_defs::SPACES_ROOM );
    _mRoomColor_ptr   = std::make_unique<ColorWrap>( spaces_defs::SPACES_MINT );
@@ -15,25 +31,15 @@ Room::Room()
    setOrigin( 0.0f, 0.0f );
 }
 
-Room::Room( std::vector<std::weak_ptr<Room> > &aNeighbors,
-            ShapeWrap<Rectangle>              &aRoomShape,
-            ColorWrap                         &aRoomColor,
-            ColorWrap                         &aRoomOutline,
-            Vector2                           &aLocation )
-   :
-   _mRoomShape_ptr( std::make_unique<ShapeWrap<Rectangle> >( aRoomShape ) ),
-   _mRoomColor_ptr( std::make_unique<ColorWrap>( aRoomColor ) ),
-   _mRoomOutline_ptr( std::make_unique<ColorWrap>( aRoomOutline ) ),
-   _mNeighbors( std::move( aNeighbors ) ),
-   _mLocation( aLocation )
-{
-   fixInternalShape();
-}
-
 void Room::drawRoom()
 {
    DrawRectangleRec( getShape(), getRoomColor() );
    DrawRectangleLinesEx( getShape(), 10.0f, getRoomOutlineColor() );
+   DrawText( _mName.c_str(),
+             ( int )( _mLocation.x + ( ( float )spaces_defs::SPACES_SCREEN_WIDTH / 2.0f ) ), // calculates offset from current location
+             ( int )( _mLocation.y + ( ( float )spaces_defs::SPACES_SCREEN_HEIGHT / 2.0f ) ),
+             20,
+             DARKGREEN );
 }
 
 void Room::setOrigin( const float _x, const float _y )
@@ -69,35 +75,45 @@ void Room::fixInternalShape() // fix invariants
 
 void Room::setNeighbor( std::shared_ptr<Room> nbor, spaces_defs::SpacesNeighbors i )
 {
-   _mNeighbors[static_cast<size_t>( i )] = nbor;
-
-   switch ( i )
+   if ( is_uninitialized( _mNeighbors[static_cast<size_t>( i )] ) )
    {
-      case spaces_defs::SpacesNeighbors::LEFT:
-         nbor->setOne( shared_from_this(), spaces_defs::SpacesNeighbors::RIGHT );
-         nbor->setOrigin( this->_mLocation.x - 1500.0f, this->_mLocation.y );
-         break;
-      case spaces_defs::SpacesNeighbors::RIGHT:
-         nbor->setOne( shared_from_this(), spaces_defs::SpacesNeighbors::LEFT );
-         nbor->setOrigin( this->_mLocation.x + 1500.0f, this->_mLocation.y );
-         break;
+      _mNeighbors[static_cast<size_t>( i )] = nbor;
 
-      case spaces_defs::SpacesNeighbors::UP:
-         nbor->setOne( shared_from_this(), spaces_defs::SpacesNeighbors::DOWN );
-         nbor->setOrigin( this->_mLocation.x, this->_mLocation.y - 750.0f );
-         break;
-      case spaces_defs::SpacesNeighbors::DOWN:
-         nbor->setOne( shared_from_this(), spaces_defs::SpacesNeighbors::UP );
-         nbor->setOrigin( this->_mLocation.x, this->_mLocation.y + 750.0f );
-         break;
+      switch ( i )
+      {
+         case spaces_defs::SpacesNeighbors::LEFT:
+            nbor->setOne( shared_from_this(), spaces_defs::SpacesNeighbors::RIGHT );
+            nbor->setOrigin( this->_mLocation.x - 1500.0f, this->_mLocation.y );
+            break;
+         case spaces_defs::SpacesNeighbors::RIGHT:
+            nbor->setOne( shared_from_this(), spaces_defs::SpacesNeighbors::LEFT );
+            nbor->setOrigin( this->_mLocation.x + 1500.0f, this->_mLocation.y );
+            break;
 
-      default:
-         break;
+         case spaces_defs::SpacesNeighbors::UP:
+            nbor->setOne( shared_from_this(), spaces_defs::SpacesNeighbors::DOWN );
+            nbor->setOrigin( this->_mLocation.x, this->_mLocation.y - 750.0f );
+            break;
+         case spaces_defs::SpacesNeighbors::DOWN:
+            nbor->setOne( shared_from_this(), spaces_defs::SpacesNeighbors::UP );
+            nbor->setOrigin( this->_mLocation.x, this->_mLocation.y + 750.0f );
+            break;
+
+         default:
+            break;
+      }
+   }
+   else
+   {
+      std::cout << "ERROR: THIS ROOM ALREADY HAS A NEIGHBOR THERE" << std::endl;
    }
 
 }
 
 void Room::setOne( std::shared_ptr<Room> nbor, spaces_defs::SpacesNeighbors i )
 {
-   _mNeighbors[static_cast<size_t>( i )] = nbor;
+   if ( is_uninitialized( _mNeighbors[static_cast<size_t>( i )] ) )
+   {
+      _mNeighbors[static_cast<size_t>( i )] = nbor;
+   }
 }
