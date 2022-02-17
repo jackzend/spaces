@@ -16,7 +16,7 @@ namespace spaces_defs
 
    constexpr ShapeWrap<Rectangle> SPACES_ROOM = ShapeWrap<Rectangle>( ( ( float )SPACES_SCREEN_WIDTH / 2.0f ) - ( 1500.0f / 2.0f ), ( ( float )SPACES_SCREEN_HEIGHT / 2.0f ) - ( 750.0f / 2.0f ), 1500.0f, 750.0f );
 
-   enum class ShapeNeighbors
+   enum class SpacesNeighbors
    {
       LEFT = 0,
       RIGHT = 1,
@@ -24,8 +24,8 @@ namespace spaces_defs
       DOWN = 3
    };
 
-   const float SPACES_CAMERA_INCREMENT_X = 2.0f;
-   const float SPACES_CAMERA_INCREMENT_Y = 2.0f;
+   const float SPACES_CAMERA_INCREMENT_X = 8.0f;
+   const float SPACES_CAMERA_INCREMENT_Y = 8.0f;
 
 } // spaces_defs
 
