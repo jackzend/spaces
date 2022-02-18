@@ -9,14 +9,16 @@ class SpacesCamera
    Vector2 _mLocation;
    ShapeWrap<Rectangle> _mSprite;
 
-public:
-   SpacesCamera();
-   Vector2 getOffset(); // this is what we update our room locations with
-   void incrementX();
-   void incrementY();
-   void decrementX();
-   void decrementY();
-   void drawSprite();
+   public:
+      SpacesCamera();
+      Vector2 getOffset(); // this is what we update our room locations with
+      void incrementX();
+      void incrementY();
+      void decrementX();
+      void decrementY();
+      void drawSprite();
+
+      Vector2 getLocation() { return _mLocation; }
 };
 
 #endif // CAMERA_H
