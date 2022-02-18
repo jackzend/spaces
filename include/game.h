@@ -24,6 +24,10 @@ class Game
                         );
    bool isInRoom( const Vector2 aCameraPos,
                   const Vector2 aRoomOrigin );
+   bool isTouchingWallLR( const Vector2 aCameraPos,
+                          const Vector2 aRoomOrigin ); // touching sidewalls
+   bool isTouchingWallUD( const Vector2 aCameraPos,
+                          const Vector2 aRoomOrigin ); // touching top or bottom walls
    public:
       Game() = delete;
       Game( const std::string aSeedName );

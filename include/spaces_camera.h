@@ -19,6 +19,10 @@ class SpacesCamera
       void drawSprite();
 
       Vector2 getLocation() { return _mLocation; }
+
+      void setLocation( float x,
+                        float y ) { _mLocation.x = x; _mLocation.y = y; }
+      void setLocation( Vector2 aVec ) { _mLocation = aVec; }
 };
 
 #endif // CAMERA_H

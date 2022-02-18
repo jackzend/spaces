@@ -63,8 +63,8 @@ bool Game::isInRoom( const Vector2 aCameraPos, const Vector2 aRoomOrigin )
    bool checkPosX = ( aCameraPos.x <= ( aRoomOrigin.x + SPACES_ROOM_WIDTH / 2.0f ) );
    bool checkNegX = ( aCameraPos.x >= ( aRoomOrigin.x - SPACES_ROOM_WIDTH / 2.0f ) );
 
-   bool checkPosY = ( aCameraPos.y <= ( aRoomOrigin.y + SPACES_ROOM_WIDTH / 2.0f ) );
-   bool checkNegY = ( aCameraPos.y >= ( aRoomOrigin.y - SPACES_ROOM_WIDTH / 2.0f ) );
+   bool checkPosY = ( aCameraPos.y <= ( aRoomOrigin.y + SPACES_ROOM_HEIGHT / 2.0f ) );
+   bool checkNegY = ( aCameraPos.y >= ( aRoomOrigin.y - SPACES_ROOM_HEIGHT / 2.0f ) );
 
    if ( checkPosX and checkNegX and checkPosY and checkNegY )
    {
@@ -74,6 +74,46 @@ bool Game::isInRoom( const Vector2 aCameraPos, const Vector2 aRoomOrigin )
    {
       return false;
    }
+}
+
+bool Game::isTouchingWallLR( const Vector2 aCameraPos, const Vector2 aRoomOrigin )
+{
+   bool checkRight = ( int )( aCameraPos.x + 25.0f ) >= ( int )( ( aRoomOrigin.x + SPACES_ROOM_WIDTH / 2.0f ) - SPACES_WALL_THICKNESS );
+   bool checkLeft  = ( int )( aCameraPos.x - 25.0f ) <= ( int )( ( aRoomOrigin.x - SPACES_ROOM_WIDTH / 2.0f ) + SPACES_WALL_THICKNESS );
+
+   if ( checkLeft or checkRight )
+   {
+      if ( checkRight )
+      {
+         _mCam.setLocation( ( aRoomOrigin.x + SPACES_ROOM_WIDTH / 2.0f ) - SPACES_WALL_THICKNESS - 25.0f, aCameraPos.y );
+      }
+      else if ( checkLeft )
+      {
+         _mCam.setLocation( ( aRoomOrigin.x - SPACES_ROOM_WIDTH / 2.0f ) + SPACES_WALL_THICKNESS + 25.0f, aCameraPos.y );
+      }
+      return true;
+   }
+   return false;
+}
+
+bool Game::isTouchingWallUD( const Vector2 aCameraPos, const Vector2 aRoomOrigin )
+{
+   bool checkDown = ( int )( aCameraPos.y + 25.0f ) >= ( int )( ( aRoomOrigin.y + SPACES_ROOM_HEIGHT / 2.0f ) - SPACES_WALL_THICKNESS );
+   bool checkUp   = ( int )( aCameraPos.y - 25.0f ) <= ( int )( ( aRoomOrigin.y - SPACES_ROOM_HEIGHT / 2.0f ) + SPACES_WALL_THICKNESS );
+   if ( checkDown or checkUp )
+   {
+      if ( checkDown )
+      {
+         _mCam.setLocation( aCameraPos.x, ( aRoomOrigin.y + SPACES_ROOM_HEIGHT / 2.0f ) - SPACES_WALL_THICKNESS - 25.0f );
+      }
+      else if ( checkUp )
+      {
+         _mCam.setLocation( aCameraPos.x, ( aRoomOrigin.y - SPACES_ROOM_HEIGHT / 2.0f ) + SPACES_WALL_THICKNESS + 25.0f );
+      }
+
+      return true;
+   }
+   return false;
 }
 
 void Game::gameLoop()
@@ -116,11 +156,38 @@ void Game::checkInputs()
    }
    else if ( IsKeyDown( KEY_LEFT ) )
    {
+      if ( IsKeyDown( KEY_DOWN ) )
+      {
+         _mCam.incrementY();
+      }
+      else if ( IsKeyDown( KEY_UP ) )
+      {
+         _mCam.decrementY();
+      }
       _mCam.decrementX();
    }
    else if ( IsKeyDown( KEY_RIGHT ) )
    {
+      if ( IsKeyDown( KEY_DOWN ) )
+      {
+         _mCam.incrementY();
+      }
+      else if ( IsKeyDown( KEY_UP ) )
+      {
+         _mCam.decrementY();
+      }
       _mCam.incrementX();
+   }
+
+   if ( isTouchingWallLR( _mCam.getLocation(), _mCurrentRoom->getOrigin() ) )
+   {
+      std::cout << "touching side wall" << std::endl;
+
+   }
+
+   if ( isTouchingWallUD( _mCam.getLocation(), _mCurrentRoom->getOrigin() ) )
+   {
+      std::cout << "touching top or bottom wall" << std::endl;
    }
 
    if ( IsKeyPressed( KEY_A ) )
