@@ -7,14 +7,26 @@
 
 namespace spaces_defs
 {
-   constexpr int SPACES_SCREEN_WIDTH  = 1920;
-   constexpr int SPACES_SCREEN_HEIGHT = 1080;
+   // uncomment for linux?
+   // constexpr int SPACES_SCREEN_WIDTH = 1920;
+   // constexpr int SPACES_SCREEN_HEIGHT = 1080;
+   constexpr int SPACES_SCREEN_WIDTH = 1792;
+   constexpr int SPACES_SCREEN_HEIGHT = 1120;
 
-   constexpr ColorWrap SPACES_GREEN     = ColorWrap( 186u, 218u, 85u, 255u );
-   constexpr ColorWrap SPACES_MINT      = ColorWrap( 182u, 252u, 213u, 255u );
-   constexpr ColorWrap SPACES_DARK_MINT = ColorWrap( 91u, 126u, 106u, 255u );
+   constexpr float SPACES_ROOM_WIDTH = 1500.0f;
+   constexpr float SPACES_ROOM_HEIGHT = 750.0f;
 
-   constexpr ShapeWrap<Rectangle> SPACES_ROOM = ShapeWrap<Rectangle>( ( ( float )SPACES_SCREEN_WIDTH / 2.0f ) - ( 1500.0f / 2.0f ), ( ( float )SPACES_SCREEN_HEIGHT / 2.0f ) - ( 750.0f / 2.0f ), 1500.0f, 750.0f );
+   constexpr ColorWrap SPACES_GREEN = ColorWrap(186u, 218u, 85u, 255u);
+   constexpr ColorWrap SPACES_MINT = ColorWrap(182u, 252u, 213u, 255u);
+   constexpr ColorWrap SPACES_DARK_MINT = ColorWrap(91u, 126u, 106u, 255u);
+   constexpr ColorWrap SPACES_ELLIES_PURPLE = ColorWrap(102u, 103u, 171u, 255u);
+   constexpr ColorWrap SPACES_ELLIES_BLUE = ColorWrap(74u, 140u, 255u, 255u);
+
+   constexpr ShapeWrap<Rectangle> SPACES_ROOM = ShapeWrap<Rectangle>(((float)SPACES_SCREEN_WIDTH / 2.0f) - (1500.0f / 2.0f), ((float)SPACES_SCREEN_HEIGHT / 2.0f) - (750.0f / 2.0f), 1500.0f, 750.0f);
+   constexpr ShapeWrap<Rectangle> SPACES_SPRITE = ShapeWrap<Rectangle>(((float)spaces_defs::SPACES_SCREEN_WIDTH / 2.0f) - (50.0f / 2.0f), ((float)SPACES_SCREEN_HEIGHT / 2.0f) - (50.0f / 2.0f), 50.0f, 50.0f);
+
+   constexpr float SPACES_WALL_THICKNESS = 20.0f;
+   constexpr float SPACES_TEXT_HEIGHT = 30.0f;
 
    enum class SpacesNeighbors
    {
@@ -29,7 +41,7 @@ namespace spaces_defs
 
 } // spaces_defs
 
-template<typename ShapeStruct>
+/*template<typename ShapeStruct>
 inline ShapeStruct resizeShape( const ShapeStruct &s )
 {
    ShapeStruct ret;
@@ -39,13 +51,13 @@ inline ShapeStruct resizeShape( const ShapeStruct &s )
    ret.height = s.height * ( ( float )GetRenderHeight() / ( float )spaces_defs::SPACES_SCREEN_HEIGHT );
 
    return ret;
-}
+}*/
 
-template<typename T>
-inline bool is_uninitialized( std::weak_ptr<T> const &weak )
+template <typename T>
+inline bool is_uninitialized(std::weak_ptr<T> const &weak)
 {
    using wt = std::weak_ptr<T>;
-   return !weak.owner_before( wt{} ) && !wt{}.owner_before( weak );
+   return !weak.owner_before(wt{}) && !wt{}.owner_before(weak);
 }
 
 #endif // SPACES_DEFS_H

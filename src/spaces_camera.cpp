@@ -1,8 +1,8 @@
 #include "spaces_camera.h"
 
 SpacesCamera::SpacesCamera()
-   :
-   _mLocation()
+    : _mLocation(),
+      _mSprite(spaces_defs::SPACES_SPRITE)
 {
    _mLocation.x = 0;
    _mLocation.y = 0;
@@ -20,3 +20,9 @@ void SpacesCamera::incrementX() { _mLocation.x += spaces_defs::SPACES_CAMERA_INC
 void SpacesCamera::incrementY() { _mLocation.y += spaces_defs::SPACES_CAMERA_INCREMENT_Y; }
 void SpacesCamera::decrementX() { _mLocation.x -= spaces_defs::SPACES_CAMERA_INCREMENT_X; }
 void SpacesCamera::decrementY() { _mLocation.y -= spaces_defs::SPACES_CAMERA_INCREMENT_Y; }
+
+void SpacesCamera::drawSprite()
+{
+   DrawRectangleRec(_mSprite.getShape(), GRAY);
+   DrawRectangleLinesEx(_mSprite.getShape(), 5.0f, DARKGRAY);
+}

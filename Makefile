@@ -5,7 +5,10 @@
 # Compiler settings - Can be customized.
 CC = c++
 CXXFLAGS = -std=c++17 -Wall -g -I.. -Iinclude
-LDFLAGS = -lraylib -lglfw -lSDL2 -lGL -lGLEW -lX11 -lpthread -lXrandr -lXi -ldl
+#uncomment below when working on linux
+#LDFLAGS = -lraylib -lglfw -lSDL2 -lGL -lGLEW -lX11 -lpthread -lXrandr -lXi -ldl
+#uncomment below when building on mac
+LDFLAGS = -lraylib 
 
 # Makefile settings - Can be customized.
 APPNAME = spaces_bin
