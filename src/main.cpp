@@ -10,35 +10,18 @@
 
 using namespace spaces_defs;
 
-using room_ptr = std::shared_ptr<Room>;
-
 int main()
 {
-   InitWindow( SPACES_SCREEN_WIDTH, SPACES_SCREEN_HEIGHT, "spaces poc" );
+   // SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+   InitWindow(SPACES_SCREEN_WIDTH, SPACES_SCREEN_HEIGHT, "spaces poc");
 
-   Game gm( "Hello World" );
-   // room1->setNeighbor( room3, SpacesNeighbors::LEFT ); // should induce an error message since alreadt has left neighbor
+   Game gm("Hello World");
 
    SpacesCamera cam;
-   SetTargetFPS( 60 );
-   while ( !WindowShouldClose() )
+   SetTargetFPS(60);
+   while (!WindowShouldClose())
    {
       gm.gameLoop();
-      /*
-      auto offset = cam.getOffset();
-      griffsRoom->updateLocationWithCameraOffset( offset );
-      jacksRoom->updateLocationWithCameraOffset( offset );
-
-      BeginDrawing();
-      griffsRoom->drawRoom();
-      jacksRoom->drawRoom();
-
-      ClearBackground( backgroundColor );
-
-      cam.drawSprite();
-      DrawText( "Testing", 10, 10, 20, DARKGREEN );
-      DrawFPS( 10, 50 );
-      EndDrawing();*/
    }
    CloseWindow();
 }

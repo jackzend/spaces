@@ -10,11 +10,13 @@ namespace spaces_defs
    // uncomment for linux?
    // constexpr int SPACES_SCREEN_WIDTH = 1920;
    // constexpr int SPACES_SCREEN_HEIGHT = 1080;
+
+   using rectangle_ptr = std::unique_ptr<ShapeWrap<Rectangle>>;
    constexpr int SPACES_SCREEN_WIDTH = 1792;
    constexpr int SPACES_SCREEN_HEIGHT = 1120;
 
-   constexpr float SPACES_ROOM_WIDTH = 1500.0f;
-   constexpr float SPACES_ROOM_HEIGHT = 750.0f;
+   constexpr float SPACES_ROOM_WIDTH = (2.0f / 3.0f) * SPACES_SCREEN_WIDTH;
+   constexpr float SPACES_ROOM_HEIGHT = (2.0f / 3.0f) * SPACES_SCREEN_HEIGHT;
 
    constexpr ColorWrap SPACES_GREEN = ColorWrap(186u, 218u, 85u, 255u);
    constexpr ColorWrap SPACES_MINT = ColorWrap(182u, 252u, 213u, 255u);
@@ -22,11 +24,34 @@ namespace spaces_defs
    constexpr ColorWrap SPACES_ELLIES_PURPLE = ColorWrap(102u, 103u, 171u, 255u);
    constexpr ColorWrap SPACES_ELLIES_BLUE = ColorWrap(74u, 140u, 255u, 255u);
 
-   constexpr ShapeWrap<Rectangle> SPACES_ROOM = ShapeWrap<Rectangle>(((float)SPACES_SCREEN_WIDTH / 2.0f) - (1500.0f / 2.0f), ((float)SPACES_SCREEN_HEIGHT / 2.0f) - (750.0f / 2.0f), 1500.0f, 750.0f);
-   constexpr ShapeWrap<Rectangle> SPACES_SPRITE = ShapeWrap<Rectangle>(((float)spaces_defs::SPACES_SCREEN_WIDTH / 2.0f) - (50.0f / 2.0f), ((float)SPACES_SCREEN_HEIGHT / 2.0f) - (50.0f / 2.0f), 50.0f, 50.0f);
+   constexpr ShapeWrap<Rectangle> SPACES_ROOM = ShapeWrap<Rectangle>(((float)SPACES_SCREEN_WIDTH / 2.0f) - (SPACES_ROOM_WIDTH / 2.0f), ((float)SPACES_SCREEN_HEIGHT / 2.0f) - (SPACES_ROOM_HEIGHT / 2.0f), SPACES_ROOM_WIDTH, SPACES_ROOM_HEIGHT);
+
+   constexpr float SPACES_SPRITE_HEIGHT = 50.0f;
+   constexpr ShapeWrap<Rectangle> SPACES_SPRITE = ShapeWrap<Rectangle>(((float)SPACES_SCREEN_WIDTH / 2.0f) - (SPACES_SPRITE_HEIGHT / 2.0f), ((float)SPACES_SCREEN_HEIGHT / 2.0f) - (SPACES_SPRITE_HEIGHT / 2.0f), SPACES_SPRITE_HEIGHT, SPACES_SPRITE_HEIGHT);
 
    constexpr float SPACES_WALL_THICKNESS = 20.0f;
    constexpr float SPACES_TEXT_HEIGHT = 30.0f;
+   constexpr float SPACES_DOOR_HEIGHT = 100.0f;
+
+   constexpr float SPACES_DOOR_LEFT_X_OFFSET = ((float)SPACES_SCREEN_WIDTH / 2.0f) - (SPACES_ROOM_WIDTH / 2.0f);
+   constexpr float SPACES_DOOR_LEFT_Y_OFFSET = ((float)SPACES_SCREEN_HEIGHT / 2.0f) - (SPACES_DOOR_HEIGHT / 2.0f);
+
+   constexpr ShapeWrap<Rectangle> SPACES_DOOR_LEFT = ShapeWrap<Rectangle>(SPACES_DOOR_LEFT_X_OFFSET, SPACES_DOOR_LEFT_Y_OFFSET, SPACES_WALL_THICKNESS, SPACES_DOOR_HEIGHT);
+
+   constexpr float SPACES_DOOR_RIGHT_X_OFFSET = SPACES_DOOR_LEFT_X_OFFSET + SPACES_ROOM_WIDTH - SPACES_WALL_THICKNESS;
+   constexpr float SPACES_DOOR_RIGHT_Y_OFFSET = SPACES_DOOR_LEFT_Y_OFFSET;
+
+   constexpr ShapeWrap<Rectangle> SPACES_DOOR_RIGHT = ShapeWrap<Rectangle>(SPACES_DOOR_RIGHT_X_OFFSET, SPACES_DOOR_RIGHT_Y_OFFSET, SPACES_WALL_THICKNESS, SPACES_DOOR_HEIGHT);
+
+   constexpr float SPACES_DOOR_UP_X_OFFSET = ((float)SPACES_SCREEN_WIDTH / 2.0f) - (SPACES_DOOR_HEIGHT / 2.0f);
+   constexpr float SPACES_DOOR_UP_Y_OFFSET = ((float)SPACES_SCREEN_HEIGHT / 2.0f) - (SPACES_ROOM_HEIGHT / 2.0f);
+
+   constexpr ShapeWrap<Rectangle> SPACES_DOOR_UP = ShapeWrap<Rectangle>(SPACES_DOOR_UP_X_OFFSET, SPACES_DOOR_UP_Y_OFFSET, SPACES_DOOR_HEIGHT, SPACES_WALL_THICKNESS);
+
+   constexpr float SPACES_DOOR_DOWN_X_OFFSET = SPACES_DOOR_UP_X_OFFSET;
+   constexpr float SPACES_DOOR_DOWN_Y_OFFSET = SPACES_DOOR_UP_Y_OFFSET + SPACES_ROOM_HEIGHT - SPACES_WALL_THICKNESS;
+
+   constexpr ShapeWrap<Rectangle> SPACES_DOOR_DOWN = ShapeWrap<Rectangle>(SPACES_DOOR_DOWN_X_OFFSET, SPACES_DOOR_DOWN_Y_OFFSET, SPACES_DOOR_HEIGHT, SPACES_WALL_THICKNESS);
 
    enum class SpacesNeighbors
    {
@@ -38,6 +63,8 @@ namespace spaces_defs
 
    const float SPACES_CAMERA_INCREMENT_X = 8.0f;
    const float SPACES_CAMERA_INCREMENT_Y = 8.0f;
+
+   constexpr int SPACES_MAX_RENDER_ROOMS = 50;
 
 } // spaces_defs
 
